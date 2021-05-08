@@ -19,9 +19,9 @@ public:
 	/** This function will be bound to Command (by default it will bring up application window) */
 	void AppStarted();
 	
-private:
-	
+private:	
 	TSharedRef<class SDockTab> OnSpawnMainTab(const class FSpawnTabArgs& SpawnTabArgs);
+	TSharedRef<SDockTab> SpawnTab(const FSpawnTabArgs& Args, FName TabIdentifier);
 
 private:
 	TSharedPtr<class FUICommandList> AppCommands;

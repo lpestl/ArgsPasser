@@ -12,6 +12,15 @@ static const FName ArgsPasserModuleTabName("ArgsPasserModule");
 
 #define LOCTEXT_NAMESPACE "FArgsPasserModule"
 
+/* Static tab manager */
+static TSharedPtr<FTabManager> ArgsPasserTabManager;
+/* Static menu */
+namespace ArgsPasserMenu
+{
+	TSharedRef<FWorkspaceItem> MenuRoot = FWorkspaceItem::NewGroup(NSLOCTEXT("App", "MenuRoot", "MenuRoot") );
+	TSharedRef<FWorkspaceItem> Tabs = MenuRoot->AddGroup( NSLOCTEXT("App", "SuiteTabs", "Tabs") );
+}
+
 void FArgsPasserModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; 
@@ -29,7 +38,7 @@ void FArgsPasserModule::StartupModule()
 		FCanExecuteAction());
 		
 	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(ArgsPasserModuleTabName, FOnSpawnTab::CreateRaw(this, &FArgsPasserModule::OnSpawnMainTab))
-		.SetDisplayName(LOCTEXT("FArgsPasserModuleTabTitle", "ArgsPasserModule"))
+		.SetDisplayName( LOCTEXT("ArgsPasserTabTitle", "Args Passer") )
 		.SetMenuType(ETabSpawnerMenuType::Hidden);
 }
 
@@ -47,24 +56,79 @@ void FArgsPasserModule::ShutdownModule()
 
 TSharedRef<SDockTab> FArgsPasserModule::OnSpawnMainTab(const FSpawnTabArgs& SpawnTabArgs)
 {
-	FText WidgetText = FText::Format(
-		LOCTEXT("WindowWidgetText", "Add code to {0} in {1} to override this window's contents"),
-		FText::FromString(TEXT("FArgsPasserModule::OnSpawnMainTab")),
-		FText::FromString(TEXT("ArgsPasserModule.cpp"))
-		);
+	TSharedRef<FTabManager::FLayout> Layout = FTabManager::NewLayout( "ArgsPasser_Layout" )
+	->AddArea
+	(
+		// The primary area will be restored and returned as a widget.
+		// Unlike other areas it will not get its own window.
+		// This allows the caller to explicitly place the primary area somewhere in the widget hierarchy.
+		FTabManager::NewPrimaryArea()
+		->Split
+		(
+			//The first cell in the primary area will be occupied by a stack of tabs.
+			// They are all opened.
+			FTabManager::NewStack()
+			->SetHideTabWell( true )
+			->AddTab("LauncherTab", ETabState::OpenedTab)
+		)
+	);
 
-	return SNew(SDockTab)
-		.TabRole(ETabRole::NomadTab)
+	TSharedRef<SDockTab> ArgsPasserTab =
+		SNew(SDockTab)
+		.TabRole(ETabRole::MajorTab)
+		.Label( LOCTEXT("ArgsPasserTabTitle", "Args Passer") );
+
+	ArgsPasserTabManager = FGlobalTabmanager::Get()->NewTabManager(ArgsPasserTab);
+	ArgsPasserTabManager->RegisterTabSpawner( "LauncherTab", FOnSpawnTab::CreateRaw(this, &FArgsPasserModule::SpawnTab, FName("LauncherTab")) )
+		.SetDisplayName( NSLOCTEXT( "Launcher", "LauncherDisplayName", "Launcher" ) )
+		.SetGroup(ArgsPasserMenu::Tabs);
+
+	FMenuBarBuilder MenuBarBuilder = FMenuBarBuilder( TSharedPtr<FUICommandList>() );
+	MenuBarBuilder.AddPullDownMenu(
+			NSLOCTEXT("App", "WindowMenuLabel", "Window"),
+			FText::GetEmpty(),
+			FNewMenuDelegate::CreateSP(ArgsPasserTabManager.ToSharedRef(), &FTabManager::PopulateTabSpawnerMenu, ArgsPasserMenu::MenuRoot));
+
+	ArgsPasserTab->SetContent
+	(
+		SNew( SVerticalBox )
+		+SVerticalBox::Slot()
+		.AutoHeight()
 		[
-			// Put your tab content here!
-			SNew(SBox)
-			.HAlign(HAlign_Center)
-			.VAlign(VAlign_Center)
+			MenuBarBuilder.MakeWidget()
+		]
+		+SVerticalBox::Slot()
+		.FillHeight( 1.f )
+		[
+			ArgsPasserTabManager->RestoreFrom(Layout, SpawnTabArgs.GetOwnerWindow() ).ToSharedRef()
+		]
+	);
+	
+	return ArgsPasserTab;
+}
+
+TSharedRef<SDockTab> FArgsPasserModule::SpawnTab(const FSpawnTabArgs& Args, FName TabIdentifier)
+{
+	if (TabIdentifier.IsEqual(FName("LauncherTab")))
+	{
+		return SNew( SDockTab )
+			.Label( NSLOCTEXT( "Launcher", "LauncherDisplayName", "Launcher" ) )
+			.Clipping( EWidgetClipping::ClipToBounds )
 			[
-				SNew(STextBlock)
-				.Text(WidgetText)
-			]
-		];
+				SNew( SBox )
+				.HAlign(HAlign_Center)
+				.VAlign( VAlign_Center )
+				[
+					SNew( STextBlock )
+					.Text( NSLOCTEXT( "Launcher", "LauncherDisplayName", "Launcher") )
+				]
+			];
+	}
+	else
+	{
+		ensure(false);
+		return SNew(SDockTab);
+	}
 }
 
 void FArgsPasserModule::AppStarted()
