@@ -12,7 +12,8 @@ public class ArgsPasser : ModuleRules
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 
 		PublicIncludePaths.Add(Path.Combine(EngineDirectory, "Source", "Runtime/Launch/Public"));
-
+		PrivateIncludePaths.Add(Path.Combine(EngineDirectory, "Source", "Runtime/Launch/Private"));		// For LaunchEngineLoop.cpp include
+		
 		PrivateDependencyModuleNames.AddRange(
 			new string[] {
 				"AppFramework",
@@ -22,10 +23,10 @@ public class ArgsPasser : ModuleRules
 				"Slate",
 				"SlateCore",
 				"StandaloneRenderer",
+				"DesktopPlatform",
+				"SlateFileDialogs"
 			}
 		);
-
-		PrivateIncludePaths.Add(Path.Combine(EngineDirectory, "Source", "Runtime/Launch/Private"));		// For LaunchEngineLoop.cpp include
 
 		if (Target.Platform == UnrealTargetPlatform.IOS || Target.Platform == UnrealTargetPlatform.TVOS)
 		{

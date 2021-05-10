@@ -3,6 +3,7 @@
 #include "ArgsPasserModule/Public/ArgsPasserModule.h"
 #include "ArgsPasserModule/Public/ArgsPasserModuleStyle.h"
 #include "ArgsPasserModule/Public/ArgsPasserModuleCommands.h"
+#include "Views/SLauncherWidget.h"
 
 #include "Widgets/Docking/SDockTab.h"
 #include "Widgets/Layout/SBox.h"
@@ -115,13 +116,14 @@ TSharedRef<SDockTab> FArgsPasserModule::SpawnTab(const FSpawnTabArgs& Args, FNam
 			.Label( NSLOCTEXT( "Launcher", "LauncherDisplayName", "Launcher" ) )
 			.Clipping( EWidgetClipping::ClipToBounds )
 			[
-				SNew( SBox )
-				.HAlign(HAlign_Center)
-				.VAlign( VAlign_Center )
-				[
-					SNew( STextBlock )
-					.Text( NSLOCTEXT( "Launcher", "LauncherDisplayName", "Launcher") )
-				]
+				// SNew( SBox )
+				// .HAlign(HAlign_Center)
+				// .VAlign( VAlign_Center )
+				// [
+				// 	SNew( STextBlock )
+				// 	.Text( NSLOCTEXT( "Launcher", "LauncherDisplayName", "Launcher") )
+				// ]
+				SNew( SLauncherWidget )
 			];
 	}
 	else
