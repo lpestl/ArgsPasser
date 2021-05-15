@@ -3,6 +3,7 @@
 #include "DesktopPlatform/Public/DesktopPlatformModule.h"
 #include "DesktopPlatform/Public/IDesktopPlatform.h"
 #include "Editor/MainFrame/Public/Interfaces/IMainFrameModule.h"
+#include "ArgsPasserModule/Private/Core/LaunchTask.h"
 
 #define LOCTEXT_NAMESPACE "LauncherWidget"
 
@@ -61,6 +62,7 @@ void SLauncherWidget::Construct(const FArguments& InArgs)
 					.HAlign(HAlign_Center)
 					.Text( NSLOCTEXT( "Launcher", "ExecuteText", "Execute" ) )
 					.IsEnabled(this, &SLauncherWidget::IsExecutablePathExist)
+					.OnClicked(this, &SLauncherWidget::OnLaunchClicked)
 				]
 			]
 		]
@@ -116,6 +118,17 @@ FReply SLauncherWidget::OnBrowseExecutableClicked()
 			bIsExecutablePathExist = CheckPathExist(ExecutablePath);
 		}		
 	}
+
+	return FReply::Handled();
+}
+
+FReply SLauncherWidget::OnLaunchClicked()
+{
+	ensure(LaunchTaskPtr == nullptr);
+
+	LaunchTaskPtr = new FAsyncTask<FLaunchTask>( ExecutablePath, TArray< FString >() );
+
+	LaunchTaskPtr->StartBackgroundTask();
 
 	return FReply::Handled();
 }

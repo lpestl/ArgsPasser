@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "SlateBasics.h"
+#include "ArgsPasserModule/Private/Core/LaunchTask.h"
 
 class SLauncherWidget : public SCompoundWidget
 {
@@ -18,6 +19,7 @@ private:
 		TArray<FString>& OutFileNames);
 	
 	FReply OnBrowseExecutableClicked();
+	FReply OnLaunchClicked();
 
 	FText GetExecutablePath() const;
 	void OnExecutablePathCommited(const FText& InText, ETextCommit::Type Type);
@@ -27,5 +29,7 @@ private:
 private:
 	FString ExecutablePath;
 	bool bIsExecutablePathExist = false;
+
+	FAsyncTask<FLaunchTask>* LaunchTaskPtr = nullptr;
 };
 

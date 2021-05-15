@@ -38,6 +38,7 @@ public class ArgsPasserModule : ModuleRules
 				"CoreUObject",
 				"Slate",
 				"SlateCore",
+				"GenericPlatform"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
