@@ -45,12 +45,12 @@ void FLaunchTask::DoWork()
 	void* ReadPipe = nullptr;
 	void* WritePipe = nullptr;
 
-	// verify( FPlatformProcess::CreatePipe(ReadPipe, WritePipe) );
-	verify( FGenericPlatformProcess::CreatePipe(ReadPipe, WritePipe) );
+	verify( FPlatformProcess::CreatePipe(ReadPipe, WritePipe) );
+	// verify( FGenericPlatformProcess::CreatePipe(ReadPipe, WritePipe) );
 
 	uint32 ProcessId;
-	// FProcHandle Handle = FPlatformProcess::CreateProc(
-	FProcHandle Handle = FGenericPlatformProcess::CreateProc(
+	FProcHandle Handle = FPlatformProcess::CreateProc(
+	// FProcHandle Handle = FGenericPlatformProcess::CreateProc(
 		*ExecCommand,
 		*ArgsLineCommand,
 		bLaunchDetached,

@@ -4,6 +4,7 @@
 #include "DesktopPlatform/Public/IDesktopPlatform.h"
 #include "Editor/MainFrame/Public/Interfaces/IMainFrameModule.h"
 #include "ArgsPasserModule/Private/Core/LaunchTask.h"
+#include "Controls/SArgEditor.h"
 
 #define LOCTEXT_NAMESPACE "LauncherWidget"
 
@@ -46,6 +47,12 @@ void SLauncherWidget::Construct(const FArguments& InArgs)
 		+SVerticalBox::Slot()
 		.FillHeight( 1.f )
 		.Padding( 5.f )
+		+SVerticalBox::Slot()
+		.AutoHeight()
+		.Padding(5.f)
+		[
+			SNew(SArgEditor)
+		]
 		+SVerticalBox::Slot()
 		.AutoHeight()
 		.Padding( 5.f )
