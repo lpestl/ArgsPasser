@@ -2,6 +2,8 @@
 .vs/
 # Rider for Unreal Engine user specific files
 .idea/
+# Caches
+_ReSharper.Caches/
 
 # Compiled Object files
 *.slo
@@ -42,6 +44,7 @@
 *.sdf
 *.VC.db
 *.VC.opendb
+.vsconfig
 
 # Precompiled Assets
 SourceArt/**/*.png
