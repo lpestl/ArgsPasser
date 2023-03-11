@@ -7,10 +7,6 @@ public class ArgsPasser : ModuleRules
 {
 	public ArgsPasser(ReadOnlyTargetRules Target) : base(Target)
 	{
-		bEnforceIWYU = true;
-		bLegacyPublicIncludePaths = false;
-		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
-
 		PublicIncludePaths.Add(Path.Combine(EngineDirectory, "Source", "Runtime/Launch/Public"));
 		PrivateIncludePaths.Add(Path.Combine(EngineDirectory, "Source", "Runtime/Launch/Private"));		// For LaunchEngineLoop.cpp include
 		

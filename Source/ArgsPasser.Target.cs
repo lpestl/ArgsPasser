@@ -11,9 +11,14 @@ public class ArgsPasserTarget : TargetRules
 	{
 		Type = TargetType.Program;
 		LinkType = TargetLinkType.Monolithic;
-
+		DefaultBuildSettings = BuildSettingsVersion.Latest;
+		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
+			
 		LaunchModuleName = "ArgsPasser";
-		ExtraModuleNames.Add("EditorStyle");
+		if (bBuildEditor)
+		{
+			ExtraModuleNames.Add("EditorStyle");
+		}
 
 		bBuildDeveloperTools = false;
 
