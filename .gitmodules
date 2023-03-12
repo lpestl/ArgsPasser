@@ -1,0 +1,3 @@
+[submodule "Source/ExternalScriptLauncherModule"]
+	path = Source/ExternalScriptLauncherModule
+	url = https://github.com/lpestl/ExternalScriptLauncherModule.git
