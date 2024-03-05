@@ -1,7 +1,8 @@
 ﻿#pragma once
 
 #include "SlateBasics.h"
-#include "ArgsPasserModule/Private/Core/LaunchTask.h"
+
+class FLaunchTask;
 
 class SLauncherWidget : public SCompoundWidget
 {

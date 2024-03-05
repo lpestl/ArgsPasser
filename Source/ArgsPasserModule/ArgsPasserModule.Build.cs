@@ -26,6 +26,7 @@ public class ArgsPasserModule : ModuleRules
 			new string[]
 			{
 				"Core",
+				"ExternalScriptLauncherModule"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
@@ -38,7 +39,6 @@ public class ArgsPasserModule : ModuleRules
 				"CoreUObject",
 				"Slate",
 				"SlateCore",
-				"GenericPlatform"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

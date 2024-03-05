@@ -27,7 +27,7 @@ void SArgEditor::Construct(const FArguments& InArgs)
 		.VAlign(VAlign_Center)
 		[
 			SNew(SCheckBox)
-			.Style(&FAppStyle::Get().GetWidgetStyle<FCheckBoxStyle>("SimplifiedCheckbox"))
+			//.Style(&FAppStyle::Get().GetWidgetStyle<FCheckBoxStyle>("SimplifiedCheckbox"))
 			.IsChecked_Lambda( [HBox] { return HBox->IsEnabled() ? ECheckBoxState::Checked : ECheckBoxState::Unchecked; } )
 			.OnCheckStateChanged_Lambda( [HBox] (ECheckBoxState NewState) { HBox->SetEnabled( NewState == ECheckBoxState::Checked); })
 		];

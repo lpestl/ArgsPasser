@@ -1,10 +1,11 @@
 ﻿#include "SLauncherWidget.h"
 
-#include "DesktopPlatform/Public/DesktopPlatformModule.h"
-#include "DesktopPlatform/Public/IDesktopPlatform.h"
+#include "DesktopPlatformModule.h"
+#include "IDesktopPlatform.h"
 #include "Editor/MainFrame/Public/Interfaces/IMainFrameModule.h"
-#include "ArgsPasserModule/Private/Core/LaunchTask.h"
 #include "Controls/SArgEditor.h"
+#include "ExternalScriptLauncherModule/Public/ExternalScriptLauncherModule.h"
+#include "ExternalScriptLauncherModule/Public/LaunchTask.h"
 
 #define LOCTEXT_NAMESPACE "LauncherWidget"
 
@@ -133,6 +134,8 @@ FReply SLauncherWidget::OnLaunchClicked()
 {
 	ensure(LaunchTaskPtr == nullptr);
 
+	FModuleManager::LoadModuleChecked<FExternalScriptLauncherModule>(FName("ExternalScriptLauncherModule"));
+	
 	LaunchTaskPtr = new FAsyncTask<FLaunchTask>( ExecutablePath, TArray< FString >() );
 
 	LaunchTaskPtr->StartBackgroundTask();
